@@ -1,0 +1,28 @@
+# The expose tag will let you expose ports without publishing them to the host machine, 
+# but they will be exposed to the containers networks.
+# https://docs.docker.com/compose/compose-file/#expose
+# The ports tag will be mapping the host port with the container port HOST:CONTAINER
+
+services:
+  th-ui-proxy:
+    image: ekarpovs/th-ui-proxy-${IMAGE_ARCH}:${IMAGE_VER}
+    container_name: th-ui-proxy-${COMPOSE_PROJECT_NAME}
+    networks:
+      - theater
+    env_file:
+      - ./.env
+    ports:
+      # HOST-PORT:CONTAINER-PORT
+      - ${EXTERNAL_PORT}:${PORT}
+    volumes:
+      - ${HOST_LOGGER_PATH}:${DOCKER_LOGGER_PATH}
+    stdin_open: true
+    tty: true
+
+networks:
+  theater:
+    external: true
+
+#  volumes:
+#    static:
+
