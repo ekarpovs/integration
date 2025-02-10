@@ -3,7 +3,7 @@
 import asyncio
 import sys
 import socketio
-
+import uuid
 sio = socketio.AsyncClient()
 
 
@@ -14,7 +14,7 @@ async def main():
     auth = {
         'ownertype': 'SIMPLE',
         'owner': '2974528d-155d-42ed-aa01-37767a1994f8',
-        'client': '2974528d-155d-42ed-aa01-37767a1994f7',
+        'client': str(uuid.uuid1()),
     }
     await sio.connect('ws://127.0.0.1:8020', socketio_path='/ws/socket.io', auth=auth, transports=['websocket', 'polling', 'webtransport'], )
 
