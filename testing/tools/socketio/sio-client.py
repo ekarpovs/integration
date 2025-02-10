@@ -22,7 +22,8 @@ async def main():
         while True:
             await asyncio.sleep(3)
     except asyncio.CancelledError:
-        print("cancelled")
+        print('stop with `CancelledError`')
+        sys.exit()
 
 
 @sio.on("next")
@@ -30,9 +31,9 @@ async def get_from_server(data):
     """
     Get `server-message` event from server and print the log.
     """
-    print(f'Server acknowledged that {data} was received.')
+    print(f'The message `{data}` was received from the server.')
     if data == 'cancel':
-        print("cancelled via message")
+        print("stopp via message - `cancel`")
         sys.exit()
 
 
@@ -42,7 +43,7 @@ async def handle_successful_connect(data):
     """
     The handler will react to successful connection being established.
     """
-    print(f'connected {data}')
+    print(f'connected `{data}`')
 
 
 @sio.on("connect_error")
@@ -50,7 +51,7 @@ async def handle_connect_error(data):
     """
     The handler will react to connection error.
     """
-    print(f'connect error {data}')
+    print(f'connect error `{data}`')
 
 
 if __name__ == '__main__':
