@@ -1,8 +1,7 @@
 # client.py
 
 import asyncio
-import random
-
+import sys
 import socketio
 
 sio = socketio.AsyncClient()
@@ -13,32 +12,45 @@ async def main():
     Connect to the server and then waits for events from it.
     """
     auth = {
-        'owner-type': 'SIMPLE',
+        'ownertype': 'SIMPLE',
         'owner': '2974528d-155d-42ed-aa01-37767a1994f8',
         'client': '2974528d-155d-42ed-aa01-37767a1994f7',
     }
-    await sio.connect("ws://localhost:8020/", auth=auth, transports=['websocket'], )
+    await sio.connect('ws://127.0.0.1:8020', socketio_path='/ws/socket.io', auth=auth, transports=['websocket', 'polling', 'webtransport'], )
 
-    # while True:
-    #     await sio.emit("set_name", random.choice(("John", "Mike", "Bob")))
-    #     await asyncio.sleep(1)
+    try:
+        while True:
+            await asyncio.sleep(3)
+    except asyncio.CancelledError:
+        print("cancelled")
 
 
-@sio.on("server-message")
-async def get_from_server(name: str):
+@sio.on("next")
+async def get_from_server(data):
     """
     Get `server-message` event from server and print the log.
     """
-    print(f"Server acknowledged that `{name}` was received.")
+    print(f'Server acknowledged that {data} was received.')
+    if data == 'cancel':
+        print("cancelled via message")
+        sys.exit()
 
 
-@sio.on("connect")
-async def handle_connect_ack_from_server():
+
+@sio.on("connected")
+async def handle_successful_connect(data):
     """
     The handler will react to successful connection being established.
     """
-    await sio.emit("client_update", "Thank you!")
+    print(f'connected {data}')
 
+
+@sio.on("connect_error")
+async def handle_connect_error(data):
+    """
+    The handler will react to connection error.
+    """
+    print(f'connect error {data}')
 
 
 if __name__ == '__main__':
