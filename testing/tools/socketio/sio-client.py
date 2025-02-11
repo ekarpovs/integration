@@ -4,6 +4,18 @@ import asyncio
 import sys
 import socketio
 import uuid
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+owner_type = os.getenv('OWNER_TYPE', 'SIMPLE')
+owner = os.getenv('OWNER', '2974528d-155d-42ed-aa01-37767a1994f8')
+bs_url= os.getenv('BROADCAST_SERVICE_URL', 'ws://127.0.0.1:8020')
+sio_path = os.getenv('SIO_PATH', '/ws/socket.io')
+transports = os.getenv('TRANSPORTS', ['websocket', 'polling', 'webtransport']) 
+
 sio = socketio.AsyncClient()
 
 
@@ -12,11 +24,11 @@ async def main():
     Connect to the server and then waits for events from it.
     """
     auth = {
-        'ownertype': 'SIMPLE',
-        'owner': '2974528d-155d-42ed-aa01-37767a1994f8',
+        'owner-type': owner_type,
+        'owner': owner,
         'client': str(uuid.uuid1()),
     }
-    await sio.connect('ws://127.0.0.1:8020', socketio_path='/ws/socket.io', auth=auth, transports=['websocket', 'polling', 'webtransport'], )
+    await sio.connect(bs_url, socketio_path=sio_path, auth=auth, transports=['websocket', 'polling', 'webtransport'])
 
     try:
         while True:
@@ -26,7 +38,7 @@ async def main():
         sys.exit()
 
 
-@sio.on("next")
+@sio.on("server-message")
 async def get_from_server(data):
     """
     Get `server-message` event from server and print the log.
