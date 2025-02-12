@@ -15,6 +15,7 @@ owner = os.getenv('OWNER', '2974528d-155d-42ed-aa01-37767a1994f8')
 bs_url= os.getenv('BROADCAST_SERVICE_URL', 'ws://127.0.0.1:8020')
 sio_path = os.getenv('SIO_PATH', '/ws/socket.io')
 transports = os.getenv('TRANSPORTS', ['websocket', 'polling', 'webtransport']) 
+transports = [i.strip() for i in transports[1:-1].replace('"',"").split(',')]
 
 sio = socketio.AsyncClient()
 
@@ -28,7 +29,7 @@ async def main():
         'owner': owner,
         'client': str(uuid.uuid1()),
     }
-    await sio.connect(bs_url, socketio_path=sio_path, auth=auth, transports=['websocket', 'polling', 'webtransport'])
+    await sio.connect(bs_url, socketio_path=sio_path, auth=auth, transports=print(transports))
 
     try:
         while True:
