@@ -11,14 +11,21 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-namespace = os.getenv('NAMESPACE')
+namespace = os.getenv('NAMESPACE', 'test')
 room = os.getenv('ROOM', '2974528d-155d-42ed-aa01-37767a1994f8')
 bs_url= os.getenv('BROADCAST_SERVICE_URL', 'ws://127.0.0.1:8020')
 sio_path = os.getenv('SIO_PATH', '/ws/socket.io')
-transports = os.getenv('TRANSPORTS', ['websocket', 'polling', 'webtransport']) 
-transports = [i.strip() for i in transports[1:-1].replace('"',"").split(',')]
+transports = os.getenv('TRANSPORTS', ['websocket', 'polling', 'webtransport'])
+if isinstance(transports, str):
+    transports = [i.strip() for i in transports[1:-1].replace('"',"").split(',')]
 
-reconnection_attempts = int(os.getenv('RECONNECTION_ATTEMPTS', 0) )
+reconnection_attempts = int(os.getenv('RECONNECTION_ATTEMPTS', 5) )
+
+print(f'namespace: {namespace}')
+print(f'room: {room}')
+print(f'bs_url: {bs_url}')
+print(f'transports: {transports}')
+print(f'reconnection_attempts: {reconnection_attempts}')
 
 sio = socketio.AsyncClient(
     reconnection_attempts=reconnection_attempts
