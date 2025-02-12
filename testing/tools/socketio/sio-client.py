@@ -29,7 +29,7 @@ async def main():
         'owner': owner,
         'client': str(uuid.uuid1()),
     }
-    await sio.connect(bs_url, socketio_path=sio_path, auth=auth, transports=print(transports))
+    await sio.connect(bs_url, socketio_path=sio_path, auth=auth, transports=transports)
 
     try:
         while True:
