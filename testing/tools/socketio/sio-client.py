@@ -15,7 +15,7 @@ namespace = os.getenv('NAMESPACE', 'test')
 room = os.getenv('ROOM', '2974528d-155d-42ed-aa01-37767a1994f8')
 bs_url= os.getenv('BROADCAST_SERVICE_URL', 'ws://127.0.0.1:8020')
 sio_path = os.getenv('SIO_PATH', '/ws/socket.io')
-transports = os.getenv('TRANSPORTS', ['websocket', 'polling', 'webtransport'])
+transports = os.getenv('TRANSPORTS', ['websocket', 'polling'])
 if isinstance(transports, str):
     transports = [i.strip() for i in transports[1:-1].replace('"',"").split(',')]
 
@@ -42,14 +42,12 @@ async def get_from_server(data):
     if data == 'cancel':
         # Initiate the disconnect event
         await sio.emit('leave_room', namespace=namespace)
-        # await sio.disconnect()
-        # sys.exit()
 
 
 
 @sio.on('connect', namespace=namespace)
 async def handle_successful_connect():
-    print(f"Connected:")
+    print(f'Connected to the server')
     await sio.emit('join_room', room, namespace=namespace)
 
 @sio.on("connect_error")
@@ -62,7 +60,7 @@ async def handle_connect_error(data):
 
 @sio.on('disconnect', namespace=namespace)
 async def handle_disconnect():
-    print("Disconnected from server")
+    print(f'Disconnected from the server')
     await sio.emit('leave_room', namespace=namespace)
                    
 
