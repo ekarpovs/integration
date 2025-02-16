@@ -3,11 +3,12 @@
 echo "Today is " `date`
 
 echo $1
+echo $2
 
 docker network create theater
 
-docker compose -f docker-compose.yml -p ${USER} up -d
+EXTERNAL_URL=$1 docker compose -f docker-compose.yml -p ${USER} up -d
 
-if [ "$1" = log ] ; then
+if [ "$2" = log ] ; then
     docker logs -f -t th-ui-proxy-${USER}
 fi

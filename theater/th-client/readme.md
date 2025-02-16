@@ -27,5 +27,5 @@ http://127.0.0.1:8022/docs
 
 #### Connect inside the docker container ####
 ```bash
-docker exec -it th-ui-proxy-evgeny bash
+docker exec -it th-client-evgeny bash
 ```
