@@ -10,6 +10,5 @@ then
 else
     docker compose -f docker-compose.yml -p ${USER} stop
 fi
-docker network rm theater
 
 

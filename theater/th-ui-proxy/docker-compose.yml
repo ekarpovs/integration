@@ -8,7 +8,7 @@ services:
     image: ekarpovs/th-ui-proxy-${IMAGE_ARCH}:${IMAGE_VER}
     container_name: th-ui-proxy-${COMPOSE_PROJECT_NAME}
     networks:
-      - theater
+      - integration-${COMPOSE_PROJECT_NAME}
     env_file:
       - ./.env
     ports:
@@ -19,8 +19,9 @@ services:
     stdin_open: true
     tty: true
 
+# Concatinate your user name with the "integration-"
 networks:
-  theater:
+  integration-user-name:
     external: true
 
 #  volumes:

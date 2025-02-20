@@ -5,8 +5,6 @@ echo "Today is " `date`
 echo $1
 echo $2
 
-docker network create theater
-
 EXTERNAL_URL=$1 docker compose -f docker-compose.yml -p ${USER} up -d
 
 if [ "$2" = log ] ; then

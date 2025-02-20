@@ -4,6 +4,10 @@
 Edit the .env file
 
 
+Edit docker-compose.yml file:
+    Change the suffics "user-name" of the external integration network to your user name"
+  
+
 #### Run ####
 ```bash
 ./start.bash
