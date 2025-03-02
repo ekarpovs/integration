@@ -13,6 +13,7 @@ load_dotenv()
 
 namespace = os.getenv('NAMESPACE', 'test')
 room = os.getenv('ROOM', '2974528d-155d-42ed-aa01-37767a1994f8')
+client = str(uuid.uuid1())
 bs_url= os.getenv('BROADCAST_SERVICE_URL', 'ws://127.0.0.1:8020')
 sio_path = os.getenv('SIO_PATH', '/ws/socket.io')
 transports = os.getenv('TRANSPORTS', ['websocket', 'polling'])
@@ -23,6 +24,7 @@ reconnection_attempts = int(os.getenv('RECONNECTION_ATTEMPTS', 5) )
 
 print(f'namespace: {namespace}')
 print(f'room: {room}')
+print(f'client: {client}')
 print(f'bs_url: {bs_url}')
 print(f'transports: {transports}')
 print(f'reconnection_attempts: {reconnection_attempts}')
@@ -81,7 +83,7 @@ async def main():
     auth = {
         'owner-type': namespace,
         'owner': room,
-        'client': str(uuid.uuid1()),
+        'client': client,
     }
     try:
         await sio.connect(bs_url, socketio_path=sio_path, auth=auth, transports=transports, namespaces=[namespace])
