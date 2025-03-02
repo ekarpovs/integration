@@ -15,6 +15,11 @@ Simple Socket.io client that receives messages from a Socket.io server
 docker run --rm --network host --name sio-client-${USER} -d -it ekarpovs/sio-client-aarch64:1.0.0
 ```
 
+#### Check the client log ####
+```bash
+docker logs -f -t sio-client-${USER}
+```
+
 ### Build the docker file 
 ```bash
 docker build . --tag ekarpovs/sio-client-aarch64:1.0.0
