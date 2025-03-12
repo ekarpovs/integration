@@ -21,7 +21,7 @@ services:
 
 # Concatinate your user name with the "integration-"
 networks:
-  integration-user-name:
+  integration-evgeny:
     external: true
 
 #  volumes:

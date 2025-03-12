@@ -21,7 +21,7 @@ services:
 
 # Change the suffics "evgeny" to your user name"
 networks:
-  integration-user-name:
+  integration-evgeny:
     external: true
 
 #  volumes:
