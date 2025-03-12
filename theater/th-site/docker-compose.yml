@@ -1,0 +1,74 @@
+# The expose tag will let you expose ports without publishing them to the host machine, 
+# but they will be exposed to the containers networks.
+# https://docs.docker.com/compose/compose-file/#expose
+# The ports tag will be mapping the host port with the container port HOST:CONTAINER
+
+services:
+  pgsql:
+    image: postgres:latest
+    container_name: pgsql-int-${COMPOSE_PROJECT_NAME}
+    restart: unless-stopped
+    networks:
+      - internal
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      # HOST-PORT:CONTAINER-PORT
+      - ${POSTGRES_PORT}:5432
+    # volumes:
+    #   - local_pgdata:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin-pgsql-int-${COMPOSE_PROJECT_NAME}
+    links:
+      - pgsql
+    depends_on:
+      - pgsql
+    restart: unless-stopped
+    networks:
+      - internal
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${UI_USER}
+      PGADMIN_DEFAULT_PASSWORD: ${UI_PASSWORD}
+    ports:
+      - ${EXTERNAL_ADMIN_PORT}:80
+    # volumes:
+  emailer:
+    image: mailhog/mailhog
+    container_name: mailhog-int-${COMPOSE_PROJECT_NAME}
+    restart: unless-stopped
+    networks:
+      - internal
+    ports:
+      - ${EXTERNAL_HOG_SMTP_PORT}:1025
+      - ${EXTERNAL_HOG_HTTP_PORT}:8025
+  th-site:
+    image: ekarpovs/th-site-${IMAGE_ARCH}:${IMAGE_VER}
+    container_name: th-site-${COMPOSE_PROJECT_NAME}
+    links:
+      - pgsql
+      - emailer
+    depends_on:
+      - pgsql
+      - emailer
+    networks:
+      - internal
+    env_file:
+      - ./.env
+    ports:
+      # HOST-PORT:CONTAINER-PORT
+      - ${EXTERNAL_PORT}:${PORT}
+    # volumes:
+    #   - ${HOST_LOGGER_PATH}:${DOCKER_LOGGER_PATH}
+    stdin_open: true
+    tty: true
+
+networks:
+  internal:
+    driver: bridge
+
+#  volumes:
+#    static:
+
