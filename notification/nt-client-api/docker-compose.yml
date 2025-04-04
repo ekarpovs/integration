@@ -1,0 +1,27 @@
+# The expose tag will let you expose ports without publishing them to the host machine, 
+# but they will be exposed to the containers networks.
+# https://docs.docker.com/compose/compose-file/#expose
+# The ports tag will be mapping the host port with the container port HOST:CONTAINER
+
+services:
+  nt-client-proxy:
+    image: ekarpovs/nt-client-api-${IMAGE_ARCH}:${IMAGE_VER}
+    container_name: nt-client-api-${COMPOSE_PROJECT_NAME}
+    networks:
+      - integration-${COMPOSE_PROJECT_NAME}
+    env_file:
+      - ./.env
+    ports:
+      # HOST-PORT:CONTAINER-PORT
+      - ${EXTERNAL_PORT}:${PORT}
+    stdin_open: true
+    tty: true
+
+# Concatinate your user name with the "integration-"
+networks:
+  integration-evgeny:
+    external: true
+
+#  volumes:
+#    static:
+
