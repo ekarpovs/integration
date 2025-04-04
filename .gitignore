@@ -3,3 +3,4 @@ testing/reports/
 logs/
 content/
 **/*venv
+**/*_data.json
