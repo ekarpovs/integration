@@ -4,23 +4,51 @@
 # The ports tag will be mapping the host port with the container port HOST:CONTAINER
 
 services:
-  nt-client-proxy:
+  nt-micro-service:
     image: ekarpovs/nt-micro-service-${IMAGE_ARCH}:${IMAGE_VER}
     container_name: nt-micro-service-${COMPOSE_PROJECT_NAME}
     networks:
-      - integration-${COMPOSE_PROJECT_NAME}
+      - internal
     env_file:
       - ./.env
     ports:
       # HOST-PORT:CONTAINER-PORT
-      - ${EXTERNAL_PORT}:${PORT}
+      - ${MS_EXTERNAL_PORT}:${MS_PORT}
     stdin_open: true
     tty: true
 
-# Concatinate your user name with the "integration-"
+  nt-client-proxy:
+    image: ekarpovs/nt-client-proxy-${IMAGE_ARCH}:${IMAGE_VER}
+    container_name: nt-client-proxy-${COMPOSE_PROJECT_NAME}
+    networks:
+      - internal
+    env_file:
+      - ./.env
+    ports:
+      # HOST-PORT:CONTAINER-PORT
+      - ${PRX_EXTERNAL_PORT}:${PRX_PORT}
+    stdin_open: true
+    tty: true
+
+  nt-client-api:
+    image: ekarpovs/nt-client-api-${IMAGE_ARCH}:${IMAGE_VER}
+    container_name: nt-client-api-${COMPOSE_PROJECT_NAME}
+    depends_on:
+      - nt-client-proxy
+      - nt-micro-service
+    networks:
+      - internal
+    env_file:
+      - ./.env
+    ports:
+      # HOST-PORT:CONTAINER-PORT
+      - ${API_EXTERNAL_PORT}:${API_PORT}
+    stdin_open: true
+    tty: true
+
 networks:
-  integration-evgeny:
-    external: true
+  internal:
+    driver: bridge
 
 #  volumes:
 #    static:

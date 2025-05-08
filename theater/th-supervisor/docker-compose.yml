@@ -4,23 +4,24 @@
 # The ports tag will be mapping the host port with the container port HOST:CONTAINER
 
 services:
-  nt-client-api:
-    image: ekarpovs/nt-client-api-${IMAGE_ARCH}:${IMAGE_VER}
-    container_name: nt-client-api-${COMPOSE_PROJECT_NAME}
+  th-supervisor:
+    image: ekarpovs/th-supervisor-${IMAGE_ARCH}:${IMAGE_VER}
+    container_name: th-supervisor-${COMPOSE_PROJECT_NAME}
     networks:
-      - integration-${COMPOSE_PROJECT_NAME}
+      - internal
     env_file:
       - ./.env
     ports:
       # HOST-PORT:CONTAINER-PORT
       - ${EXTERNAL_PORT}:${PORT}
+    # volumes:
+    #   - ${HOST_LOGGER_PATH}:${DOCKER_LOGGER_PATH}
     stdin_open: true
     tty: true
 
-# Concatinate your user name with the "integration-"
 networks:
-  integration-evgeny:
-    external: true
+  internal:
+    driver: bridge
 
 #  volumes:
 #    static:

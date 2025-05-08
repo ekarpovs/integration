@@ -7,5 +7,5 @@ echo $1
 docker compose -f docker-compose.yml -p ${USER} up -d
 
 if [ "$1" = log ] ; then
-    docker logs -f -t nt-client-api-${USER}
+    docker logs -f -t th-supervisor-${USER}
 fi
