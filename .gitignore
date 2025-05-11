@@ -4,3 +4,8 @@ logs/
 content/
 **/*venv
 **/*_data.json
+# api-automation
+.hypothesis
+**/__pycache__/*
+.pytest_cache/*
+data/

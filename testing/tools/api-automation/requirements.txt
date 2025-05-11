@@ -1,0 +1,6 @@
+allure-pytest==2.14.2
+pytest-html==4.1.1
+pytest-sugar==1.0.0
+pyyaml==6.0.2
+requests==2.32.3
+schemathesis==3.39.16
