@@ -22,7 +22,7 @@ password:           test1234
 
 Note:  
 Address "IPAddress":"172.21.0.2" from:  
-docker inspect pgsql-dev -f "{{json .NetworkSettings.Networks }}"  
+docker inspect pgsql-dev-${USER} -f "{{json .NetworkSettings.Networks }}"  
 
 #### Start/stop the Db and UI from the directory:
 docker compose up -d  
