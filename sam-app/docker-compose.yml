@@ -6,7 +6,7 @@
 services:
   pgsql:
     image: postgres:latest
-    container_name: pgsql-dev-${COMPOSE_PROJECT_NAME}
+    container_name: pgsql-${COMPOSE_PROJECT_NAME}
     restart: unless-stopped
     networks:
       - internal
@@ -20,7 +20,7 @@ services:
     #   - local_pgdata:/var/lib/postgresql/data
   pgadmin:
     image: dpage/pgadmin4
-    container_name: pgadmin-pgsql-dev-${COMPOSE_PROJECT_NAME}
+    container_name: pgadmin-pgsql-${COMPOSE_PROJECT_NAME}
     links:
       - pgsql
     depends_on:

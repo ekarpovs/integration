@@ -1,7 +1,7 @@
 services:
   mongo:
     image: "mongo:latest"
-    container_name: mongo-dev-${COMPOSE_PROJECT_NAME}
+    container_name: mongo-${COMPOSE_PROJECT_NAME}
     restart: unless-stopped
     networks:
       - mongo
@@ -13,7 +13,7 @@ services:
       - ${EXTERNAL_MONGO_DATA_IMPORT_PATH}:/docker-entrypoint-initdb.d/
   mongo-express:
     image: "mongo-express:latest"
-    container_name: mongo-express-mongo-dev-${COMPOSE_PROJECT_NAME}
+    container_name: mongo-express-mongo-${COMPOSE_PROJECT_NAME}
     depends_on:
       - mongo
     restart: unless-stopped
