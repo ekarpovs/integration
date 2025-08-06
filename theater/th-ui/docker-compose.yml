@@ -1,0 +1,29 @@
+# The expose tag will let you expose ports without publishing them to the host machine, 
+# but they will be exposed to the containers networks.
+# https://docs.docker.com/compose/compose-file/#expose
+# The ports tag will be mapping the host port with the container port HOST:CONTAINER
+# Only variables from the .env available to be used withing the docker-compose.yml file itself.
+# 
+services:
+  backend:
+    image: ekarpovs/st-provider-${IMAGE_ARCH}:${IMAGE_VER}
+    container_name: st-provider-${COMPOSE_PROJECT_NAME}
+    networks:
+      - integration-evgeny
+    env_file:
+      - ./.env-srv
+    ports:
+      # HOST-PORT:CONTAINER-PORT
+      - ${EXTERNAL_PORT}:${PORT}
+    stdin_open: true
+    tty: true
+
+# Concatinate your user name with the "integration-"
+# networks:
+#   integration-evgeny:
+#     external: true
+
+networks:
+  integration-evgeny:
+    external: true
+
