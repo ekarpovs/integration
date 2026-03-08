@@ -30,6 +30,10 @@ http://127.0.0.1:8022
 ```bash
 http://127.0.0.1:8022/docs
 ```
+#### Run localy
+```bash
+docker run --env-file .env-srv -p 8041:8000 ekarpovs/st-provider-aarch64:1.0.0
+```
 
 #### Connect inside the docker container ####
 ```bash

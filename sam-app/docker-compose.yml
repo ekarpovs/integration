@@ -4,6 +4,16 @@
 # The ports tag will be mapping the host port with the container port HOST:CONTAINER
 
 services:
+  emailer:
+    image: mailhog/mailhog
+    container_name: mailhog-${COMPOSE_PROJECT_NAME}
+    restart: always
+    networks:
+      - internal
+    ports:
+      - 1025:1025
+      - ${MH_EXT_PORT}:8025
+
   pgsql:
     image: postgres:latest
     container_name: pgsql-${COMPOSE_PROJECT_NAME}
